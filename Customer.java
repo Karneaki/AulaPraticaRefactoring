@@ -1,70 +1,46 @@
 public class Customer {
     private String _name;
-    private List<Rental> _rentals = new ArrayList<>();
-
+    private Vector _rentals = new Vector();
     public Customer(String name) {
         _name = name;
     }
-
     public void addRental(Rental arg) {
-        _rentals.add(arg);
+        _rentals.addElement(arg);
     }
-
+ 
     public String getName() {
         return _name;
     }
-
+ 
     public String statement() {
-        StringBuilder result = new StringBuilder("Rental Record for " + getName() + "\n");
-
-        for (Rental each : _rentals) {
-            result.append("\t").append(each.getMovie().getTitle()).append("\t")
-                  .append(each.getCharge()).append("\n");
-        }
-
-        result.append("Amount owed is ").append(getTotalCharge()).append("\n");
-        result.append("You earned ").append(getTotalFrequentRenterPoints()).append(" frequent renter points");
-        return result.toString();
+       return new TextStatement().value(this);
     }
-
-    public String htmlStatement() {
-        StringBuilder result = new StringBuilder("<H1>Rentals for <EM>" + getName() + "</EM></H1><P>\n");
-
-        for (Rental each : _rentals) {
-            result.append(each.getMovie().getTitle()).append(": ")
-                  .append(each.getCharge()).append("<BR>\n");
-        }
-
-        result.append("<P>You owe <EM>").append(getTotalCharge()).append("</EM><P>\n");
-        result.append("On this rental you earned <EM>")
-              .append(getTotalFrequentRenterPoints())
-              .append("</EM> frequent renter points<P>");
-        return result.toString();
+ 
+    public Enumeration getRentals() {
+        return _rentals.elements();
     }
-
-    private double getTotalCharge() {
+ 
+    public double getTotalCharge() {
         double result = 0;
-        for (Rental each : _rentals) {
+        Enumeration rentals = _rentals.elements();
+        while (rentals.hasMoreElements()) {
+            Rental each = (Rental) rentals.nextElement();
             result += each.getCharge();
         }
         return result;
     }
-
-    private int getTotalFrequentRenterPoints() {
+ 
+    public int getTotalFrequentRenterPoints() {
         int result = 0;
-        for (Rental each : _rentals) {
+        Enumeration rentals = _rentals.elements();
+        while (rentals.hasMoreElements()) {
+            Rental each = (Rental) rentals.nextElement();
             result += each.getFrequentRenterPoints();
         }
         return result;
     }
-}
-
-
-    private int getTotalFrequentRenterPoints() {
-        int result = 0;
-        for (Rental each : _rentals) {
-            result += each.getFrequentRenterPoints();
-        }
-        return result;
-    }
-}
+ 
+    public String htmlStatement() {
+       return new HtmlStatement().value(this);
+   }
+ }
