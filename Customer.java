@@ -20,10 +20,7 @@ public class Customer {
         StringBuilder result = new StringBuilder("Rental Record for " + getName() + "\n");
 
         for (Rental each : _rentals) {
-            frequentRenterPoints++;
-            if (each.getMovie().getPriceCode() == Movie.NEW_RELEASE && each.getDaysRented() > 1) {
-                frequentRenterPoints++;
-            }
+            frequentRenterPoints += each.getFrequentRenterPoints();
 
             result.append("\t").append(each.getMovie().getTitle()).append("\t")
                   .append(each.getCharge()).append("\n");
@@ -75,5 +72,12 @@ public class Rental {
         }
 
         return thisAmount;
+    }
+
+    public int getFrequentRenterPoints() {
+        if (getMovie().getPriceCode() == Movie.NEW_RELEASE && getDaysRented() > 1) {
+            return 2;
+        }
+        return 1;
     }
 }
