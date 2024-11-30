@@ -1,62 +1,42 @@
 public class Movie {
 
-    public static final int CHILDRENS = 2;
-    public static final int REGULAR = 0;
-    public static final int NEW_RELEASE = 1;
-
     private String _title;
-    private int _priceCode;
+    private Price _price;
 
     public Movie(String title, int priceCode) {
         _title = title;
-        _priceCode = priceCode;
-    }
-
-    public int getPriceCode() {
-        return _priceCode;
-    }
-
-    public void setPriceCode(int priceCode) {
-        _priceCode = priceCode;
+        setPriceCode(priceCode);
     }
 
     public String getTitle() {
         return _title;
     }
 
-    /**
-     * Calcula o valor de aluguel baseado no código de preço e no número de dias alugados.
-     * @param daysRented O número de dias alugados.
-     * @return O valor a ser cobrado pela locação.
-     */
-    public double getCharge(int daysRented) {
-        double charge = 0;
+    public int getPriceCode() {
+        return _price.getPriceCode();
+    }
 
-        switch (_priceCode) {
+    public void setPriceCode(int priceCode) {
+        switch (priceCode) {
             case REGULAR:
-                charge += 2;
-                if (daysRented > 2) {
-                    charge += (daysRented - 2) * 1.5;
-                }
-                break;
-            case NEW_RELEASE:
-                charge += daysRented * 3;
+                _price = new RegularPrice();
                 break;
             case CHILDRENS:
-                charge += 1.5;
-                if (daysRented > 3) {
-                    charge += (daysRented - 3) * 1.5;
-                }
+                _price = new ChildrensPrice();
                 break;
+            case NEW_RELEASE:
+                _price = new NewReleasePrice();
+                break;
+            default:
+                throw new IllegalArgumentException("Incorrect Price Code");
         }
+    }
 
-        return charge;
+    public double getCharge(int daysRented) {
+        return _price.getCharge(daysRented);
     }
 
     public int getFrequentRenterPoints(int daysRented) {
-        if (_priceCode == NEW_RELEASE && daysRented > 1) {
-            return 2;  // Pontos extras para locações de filmes novos com mais de 1 dia.
-        }
-        return 1;  // 1 ponto para outras locações.
+        return _price.getFrequentRenterPoints(daysRented);
     }
 }
