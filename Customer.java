@@ -1,45 +1,44 @@
 public class Customer {
     private String _name;
     private List<Rental> _rentals = new ArrayList<>();
- 
+
     public Customer(String name) {
-       _name = name;
+        _name = name;
     }
- 
+
     public void addRental(Rental arg) {
-       _rentals.add(arg);
+        _rentals.add(arg);
     }
- 
+
     public String getName() {
-       return _name;
+        return _name;
     }
- 
+
     public String statement() {
-       double totalAmount = 0;
-       int frequentRenterPoints = 0;
-       StringBuilder result = new StringBuilder("Rental Record for " + getName() + "\n");
-       
-       for (Rental each : _rentals) {
-          // Calcula o valor para esta locação usando o novo método getCharge()
-          double thisAmount = each.getCharge();
+        double totalAmount = 0;
+        int frequentRenterPoints = 0;
+        StringBuilder result = new StringBuilder("Rental Record for " + getName() + "\n");
 
-          // Adiciona pontos de locador frequente
-          frequentRenterPoints++;
-          if ((each.getMovie().getPriceCode() == Movie.NEW_RELEASE) && each.getDaysRented() > 1) {
-             frequentRenterPoints++;
-          }
+        for (Rental each : _rentals) {
+            // Adiciona pontos de locador frequente
+            frequentRenterPoints++;
+            if ((each.getMovie().getPriceCode() == Movie.NEW_RELEASE) && each.getDaysRented() > 1) {
+                frequentRenterPoints++;
+            }
 
-          // Exibe os valores para esta locação
-          result.append("\t").append(each.getMovie().getTitle()).append("\t").append(thisAmount).append("\n");
-          totalAmount += thisAmount;
-       }
+            // Exibe os valores para esta locação diretamente com getCharge()
+            result.append("\t").append(each.getMovie().getTitle()).append("\t")
+                  .append(each.getCharge()).append("\n");
+            totalAmount += each.getCharge();
+        }
 
-       // Adiciona as linhas de rodapé
-       result.append("Amount owed is ").append(totalAmount).append("\n");
-       result.append("You earned ").append(frequentRenterPoints).append(" frequent renter points");
-       return result.toString();
+        // Adiciona as linhas de rodapé
+        result.append("Amount owed is ").append(totalAmount).append("\n");
+        result.append("You earned ").append(frequentRenterPoints).append(" frequent renter points");
+        return result.toString();
     }
 }
+
 public class Rental {
     private Movie _movie;
     private int _daysRented;
@@ -57,9 +56,7 @@ public class Rental {
         return _movie;
     }
 
-    /**
-     * Calcula o valor devido para esta locação.
-     */
+  
     public double getCharge() {
         double thisAmount = 0;
 
