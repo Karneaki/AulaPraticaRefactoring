@@ -4,5 +4,7 @@ public abstract class Price {
 
     public abstract double getCharge(int daysRented);
 
-    public abstract int getFrequentRenterPoints(int daysRented);
+    public int getFrequentRenterPoints(int daysRented) {
+        return 1;  // Implementação padrão
+    }
 }
