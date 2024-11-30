@@ -20,19 +20,16 @@ public class Customer {
         StringBuilder result = new StringBuilder("Rental Record for " + getName() + "\n");
 
         for (Rental each : _rentals) {
-            // Adiciona pontos de locador frequente
             frequentRenterPoints++;
-            if ((each.getMovie().getPriceCode() == Movie.NEW_RELEASE) && each.getDaysRented() > 1) {
+            if (each.getMovie().getPriceCode() == Movie.NEW_RELEASE && each.getDaysRented() > 1) {
                 frequentRenterPoints++;
             }
 
-            // Exibe os valores para esta locação diretamente com getCharge()
             result.append("\t").append(each.getMovie().getTitle()).append("\t")
                   .append(each.getCharge()).append("\n");
             totalAmount += each.getCharge();
         }
 
-        // Adiciona as linhas de rodapé
         result.append("Amount owed is ").append(totalAmount).append("\n");
         result.append("You earned ").append(frequentRenterPoints).append(" frequent renter points");
         return result.toString();
@@ -56,7 +53,6 @@ public class Rental {
         return _movie;
     }
 
-  
     public double getCharge() {
         double thisAmount = 0;
 
