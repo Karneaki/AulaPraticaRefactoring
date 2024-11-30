@@ -52,4 +52,11 @@ public class Movie {
 
         return charge;
     }
+
+    public int getFrequentRenterPoints(int daysRented) {
+        if (_priceCode == NEW_RELEASE && daysRented > 1) {
+            return 2;  // Pontos extras para locações de filmes novos com mais de 1 dia.
+        }
+        return 1;  // 1 ponto para outras locações.
+    }
 }
